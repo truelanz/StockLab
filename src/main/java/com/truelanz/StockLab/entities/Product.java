@@ -37,8 +37,8 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private ProductCategory category;
+    private Category category;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductMovement> movements = new ArrayList<>();
+    private List<Movement> movements = new ArrayList<>();
 }
