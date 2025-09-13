@@ -1,7 +1,6 @@
 package com.truelanz.StockLab.entities;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,21 +14,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_client")
+@Table(name = "tb_product")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Client {
+public class ProductMovement {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private LocalDate birth;
-    private Instant dateRegister;
-    //private String categoy; Será relacionamento
-    private String phone;
-
+    //fk product
+    private Double quantity;
+    private Byte typeEntryExit;
+    private Instant issuanceDate;
+    private String observarion;
 }
