@@ -3,9 +3,13 @@ package com.truelanz.StockLab.entities;
 import java.time.Instant;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_product")
+@Table(name = "tb_product_movement")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +29,15 @@ public class ProductMovement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    //fk product
     private Double quantity;
-    private Byte typeEntryExit;
+
+    @Enumerated(EnumType.STRING)
+    private MovementType typeEntryExit;
+
     private Instant issuanceDate;
-    private String observarion;
+    private String observation;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

@@ -28,8 +28,7 @@ public class Client {
     private Long id;
     private String name;
     private LocalDate birth;
-    private Instant dateRegister;
-    //private String categoy; Será relacionamento
     private String phone;
+    private Instant dateRegister;
 
 }
