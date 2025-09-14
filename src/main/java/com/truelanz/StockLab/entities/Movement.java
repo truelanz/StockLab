@@ -29,7 +29,7 @@ public class Movement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private Double quantity;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     private MovementType typeEntryExit;

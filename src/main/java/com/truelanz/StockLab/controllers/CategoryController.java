@@ -1,28 +1,26 @@
 package com.truelanz.StockLab.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.truelanz.StockLab.dto.CategoryDTO;
-import com.truelanz.StockLab.repositories.CategoryRepository;
+import com.truelanz.StockLab.services.CategoryService;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
-    private CategoryRepository repository;
+    private CategoryService service;
 
-    @GetMapping
-    public List<CategoryDTO> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(c -> new CategoryDTO(c.getId(), c.getName()))
-                .collect(Collectors.toList());
+     @GetMapping()
+    public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) { //Parametros: page, size, sort
+        Page <CategoryDTO> list = service.findAllPaged(pageable);
+        return ResponseEntity.ok().body(list);
     }
 }
