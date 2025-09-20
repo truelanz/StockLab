@@ -3,14 +3,17 @@ package com.truelanz.StockLab.services;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.truelanz.StockLab.dto.ClientDTO;
 import com.truelanz.StockLab.entities.Client;
 import com.truelanz.StockLab.repositories.ClientRepository;
+import com.truelanz.StockLab.services.exceptions.DatabaseException;
 import com.truelanz.StockLab.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -45,6 +48,19 @@ public class ClientService {
             return new ClientDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource not found");
+        }
+    }
+
+     @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+         if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Referential integrity failure");
         }
     }
 
