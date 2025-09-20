@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.truelanz.StockLab.dto.ClientDTO;
 import com.truelanz.StockLab.entities.Client;
 import com.truelanz.StockLab.repositories.ClientRepository;
+import com.truelanz.StockLab.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ClientService {
@@ -26,17 +29,31 @@ public class ClientService {
 
     @Transactional
     public ClientDTO insert(ClientDTO dto) {
-        // Salva movimentação
-        Client client = new Client();
-        client.setName(dto.getName());
-        client.setPhone(dto.getPhone());
-        client.setBirth(dto.getBirth());
-        client.setDateRegister(Instant.now());
-        client.setLocalAddress(dto.getLocalAddress());
-        client.setCPF(dto.getCPF());
+        Client entity = new Client();
+        copyDtoToEntity(dto, entity);
 
-        // Atualiza produto
-        repository.save(client);
-        return new ClientDTO(client);
+        repository.save(entity);
+        return new ClientDTO(entity);
+    }
+
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO dto) {
+        try {
+            Client entity = repository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+    }
+
+    private void copyDtoToEntity(ClientDTO dto, Client entity) {
+        entity.setName(dto.getName());
+        entity.setPhone(dto.getPhone());
+        entity.setBirth(dto.getBirth());
+        entity.setDateRegister(Instant.now());
+        entity.setLocalAddress(dto.getLocalAddress());
+        entity.setCPF(dto.getCPF());
     }
 }
