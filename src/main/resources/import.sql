@@ -11,9 +11,9 @@ INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, ca
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3);
 
 -- Clientes
-INSERT INTO tb_client (name, birth, phone, date_register) VALUES ('Ana Silva', DATE '1990-05-10', '11988887777', TIMESTAMP '2025-09-01 09:00:00');
+INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Ana Silva', DATE '1990-05-10', '11988887777', TIMESTAMP '2025-09-01 09:00:00', 'Rua Páprica Doce, 123', '11111111111');
 
-INSERT INTO tb_client (name, birth, phone, date_register) VALUES ('Joao da Silva', DATE '1985-03-08', '11999996666', TIMESTAMP '2025-09-02 09:10:00');
+INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Joao da Silva', DATE '1985-03-08', '11999996666', TIMESTAMP '2025-09-02 09:10:00', 'Rua Páprica Defumanda, 321', '22222222222');
 
 -- Movimentações (type_entry_exit = 'ENTRY' / 'EXIT')
 INSERT INTO tb_movement (quantity, type_entry_exit, issuance_date, observation, product_id) VALUES (50, 'ENTRY', TIMESTAMP '2025-09-01 09:15:00', 'Compra de reagente', 1);

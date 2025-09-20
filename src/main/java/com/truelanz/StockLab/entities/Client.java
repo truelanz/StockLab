@@ -30,5 +30,7 @@ public class Client {
     private LocalDate birth;
     private String phone;
     private Instant dateRegister;
+    private String localAddress;
+    private String CPF;
 
 }

@@ -1,5 +1,7 @@
 package com.truelanz.StockLab.services;
 
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,5 +22,21 @@ public class ClientService {
     public Page<ClientDTO> findAllPaged(Pageable pageable) {
         Page<Client> result = repository.findAll(pageable);
         return result.map(x -> new ClientDTO(x));
+    }
+
+    @Transactional
+    public ClientDTO insert(ClientDTO dto) {
+        // Salva movimentação
+        Client client = new Client();
+        client.setName(dto.getName());
+        client.setPhone(dto.getPhone());
+        client.setBirth(dto.getBirth());
+        client.setDateRegister(Instant.now());
+        client.setLocalAddress(dto.getLocalAddress());
+        client.setCPF(dto.getCPF());
+
+        // Atualiza produto
+        repository.save(client);
+        return new ClientDTO(client);
     }
 }

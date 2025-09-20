@@ -20,6 +20,8 @@ public class ClientDTO {
     private LocalDate birth;
     private String phone;
     private Instant dateRegister;
+    private String localAddress;
+    private String CPF;
 
     public ClientDTO(Client entity) {
     this.id = entity.getId();
@@ -27,5 +29,7 @@ public class ClientDTO {
     this.birth = entity.getBirth();
     this.phone = entity.getPhone();
     this.dateRegister = entity.getDateRegister();
+    this.localAddress = entity.getLocalAddress();
+    this.CPF = entity.getCPF();
     }
 }
