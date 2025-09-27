@@ -1,10 +1,14 @@
 package com.truelanz.StockLab.entities;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,10 +36,13 @@ public class Product {
     private Long id;
     private String name;
     private Integer currentQuantity;
-    private Double productValue;
+    private BigDecimal productValue;
     private Instant issuanceDate;
+    private String imgProduct;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status = ProductStatus.ACTIVE; // padrão ativo
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

@@ -4,11 +4,11 @@ INSERT INTO tb_category (name) VALUES ('Equipamentos de Analise');
 INSERT INTO tb_category (name) VALUES ('Materiais de Consumo');
 
 -- Produtos
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1);
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1, 'https://img.com/reagente.jpg');
 
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id) VALUES ('Microscopio Optico', 5, 3500.00, DATE '2025-08-15', 2);
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Microscópio Óptico', 5, 3500.00, DATE '2025-08-15', 2, 'https://img.com/microscopio.jpg');
 
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3);
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3, 'https://img.com/tubos.jpg');
 
 -- Clientes
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Ana Silva', DATE '1990-05-10', '11988887777', TIMESTAMP '2025-09-01 09:00:00', 'Rua Páprica Doce, 123', '11111111111');
