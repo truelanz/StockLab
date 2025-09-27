@@ -15,6 +15,8 @@ import com.truelanz.StockLab.dto.MovementDTO;
 import com.truelanz.StockLab.dto.MovementInsertDTO;
 import com.truelanz.StockLab.services.MovementService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/movement")
 public class MovementController {
@@ -34,7 +36,7 @@ public class MovementController {
     }
 
     @PostMapping
-    public ResponseEntity<MovementDTO> insert(@RequestBody MovementInsertDTO dto) {
+    public ResponseEntity<MovementDTO> insert(@Valid @RequestBody MovementInsertDTO dto) {
         MovementDTO newMovement = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMovement);
     }

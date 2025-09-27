@@ -20,6 +20,8 @@ import com.truelanz.StockLab.dto.ProductDTO;
 import com.truelanz.StockLab.dto.ProductInsertDTO;
 import com.truelanz.StockLab.services.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -34,7 +36,7 @@ public class ProductController {
     }
     
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductInsertDTO dto) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductInsertDTO dto) {
         ProductDTO newProduct = service.insert(dto);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -46,7 +48,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductInsertDTO dto) {
+    public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductInsertDTO dto) {
         ProductDTO updatedProduct = service.update(id, dto);
         return ResponseEntity.ok(updatedProduct);
     }

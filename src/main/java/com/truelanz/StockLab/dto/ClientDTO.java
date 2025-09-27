@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import com.truelanz.StockLab.entities.Client;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,8 @@ import lombok.Setter;
 public class ClientDTO {
 
     private Long id;
+    @NotBlank(message = "O nome da categoria é obrigatório")
+    @Size(min = 3, max = 50, message = "O nome da categoria deve ter entre 3 e 50 caracteres")
     private String name;
     private LocalDate birth;
     private String phone;
