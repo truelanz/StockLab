@@ -2,6 +2,7 @@ package com.truelanz.StockLab.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 import com.truelanz.StockLab.entities.Product;
 
@@ -22,6 +23,7 @@ public class ProductDTO {
     private Instant issuanceDate;
     private String imgProduct;
     private CategoryDTO category;
+    private LocalDate validity;
 
     public ProductDTO(Product entity) {
         this.id = entity.getId();
@@ -33,5 +35,6 @@ public class ProductDTO {
         if (entity.getCategory() != null) {
             this.category = new CategoryDTO(entity.getCategory());
         }
+        this.validity = entity.getValidity();
     }
 }

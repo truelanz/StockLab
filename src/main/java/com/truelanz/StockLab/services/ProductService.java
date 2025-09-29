@@ -86,6 +86,7 @@ public class ProductService {
         entity.setProductValue(dto.getProductValue());
         entity.setIssuanceDate(Instant.now());
         entity.setImgProduct(dto.getImgProduct());
+        entity.setValidity(dto.getValidity());
 
         // Busca a categoria correta
         Category category = categoryRepository.findById(dto.getCategoryId())

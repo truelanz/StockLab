@@ -1,6 +1,7 @@
 package com.truelanz.StockLab.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -27,4 +28,5 @@ public class ProductInsertDTO {
     private String imgProduct;
     @NotNull(message = "A categoria é obrigatória")
     private Long categoryId;
+    private LocalDate validity;
 }

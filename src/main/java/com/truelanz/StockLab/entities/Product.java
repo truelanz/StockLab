@@ -2,6 +2,7 @@ package com.truelanz.StockLab.entities;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class Product {
     private BigDecimal productValue;
     private Instant issuanceDate;
     private String imgProduct;
+    private LocalDate validity;
     @Enumerated(EnumType.STRING)
     private ProductStatus status = ProductStatus.ACTIVE; // padrão ativo
 
