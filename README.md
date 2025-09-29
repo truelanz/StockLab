@@ -1,6 +1,10 @@
 ## StockLab - Sistema de gerenciamento laboratorial
 
-### Back-End:
+### Necessário para rodar o projeto:
+- Java JDK 17 ou superior
+- Maven
+
+### Tecnologias Back-End:
 - Java Spring Boot
 - PostGreSQL com SupaBase
 - Jakarta validation
