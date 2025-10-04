@@ -1,14 +1,12 @@
 package com.truelanz.StockLab.entities;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,35 +22,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_product")
+@Table(name = "tb_service")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Product {
+public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
-    private Integer currentQuantity;
-    private BigDecimal productValue;
-    private Instant issuanceDate;
-    private String imgProduct;
-    private LocalDate validity;
-    @Enumerated(EnumType.STRING)
-    private ProductStatus status = ProductStatus.ACTIVE; // padrão ativo
+    private String description;
+    private LocalTime initTime;
+    private LocalTime finalTime;
+    private LocalDate initDate;
+    private LocalDate finalDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+    
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
-    private List<Movement> movements = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
-    private Service service;
-
+    // Muitos serviços pertencem a um cliente
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 }
