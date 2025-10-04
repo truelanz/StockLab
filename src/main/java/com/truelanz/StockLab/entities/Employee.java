@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_service")
+@Table(name = "tb_employee")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,6 +31,6 @@ public class Employee {
     private String name;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
+    private List<ServiceJob> services = new ArrayList<>();
     
 }

@@ -1,9 +1,14 @@
+-- Employees
+INSERT INTO tb_employee (name) VALUES ('Jeca Gay');
+INSERT INTO tb_employee (name) VALUES ('Mula Fazueli');
+INSERT INTO tb_employee (name) VALUES ('Merab');
+INSERT INTO tb_employee (name) VALUES ('Poatan');
+INSERT INTO tb_employee (name) VALUES ('Manoel Gomes');
+
 -- Categorias existentes
 INSERT INTO tb_category (name) VALUES ('Reagentes Quimicos');
 INSERT INTO tb_category (name) VALUES ('Equipamentos de Analise');
 INSERT INTO tb_category (name) VALUES ('Materiais de Consumo');
-
--- Categorias adicionais
 INSERT INTO tb_category (name) VALUES ('Medicamentos Controlados');
 INSERT INTO tb_category (name) VALUES ('Equipamentos de Proteção Individual');
 INSERT INTO tb_category (name) VALUES ('Vidrarias');

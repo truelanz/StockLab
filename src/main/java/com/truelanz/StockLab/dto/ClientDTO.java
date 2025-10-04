@@ -36,4 +36,9 @@ public class ClientDTO {
     this.localAddress = entity.getLocalAddress();
     this.CPF = entity.getCPF();
     }
+    
+    public ClientDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

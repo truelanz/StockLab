@@ -1,0 +1,9 @@
+package com.truelanz.StockLab.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.truelanz.StockLab.entities.Employee;
+
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    
+}

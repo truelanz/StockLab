@@ -39,5 +39,5 @@ public class Client {
 
     // Um cliente pode ter vários serviços
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
+    private List<ServiceJob> services = new ArrayList<>();
 }
