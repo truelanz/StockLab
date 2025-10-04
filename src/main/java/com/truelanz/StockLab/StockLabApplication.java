@@ -8,6 +8,7 @@ public class StockLabApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StockLabApplication.class, args);
+
 	}
 
 }
