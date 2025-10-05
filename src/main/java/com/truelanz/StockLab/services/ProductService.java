@@ -30,10 +30,24 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Transactional(readOnly = true)
+    /* @Transactional(readOnly = true)
     public Page<ProductDTO> findAllPaged(Pageable pageable) {
         Page<Product> result = repository.findAll(pageable);
         return result.map(x -> new ProductDTO(x));
+    } */
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> findAllPaged(Pageable pageable, String search) {
+        Page<Product> products;
+
+        if (search != null && !search.isEmpty()) {
+            products = repository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            products = repository.findAll(pageable);
+        }
+
+        // Convertendo para DTO
+        return products.map(ProductDTO::new);
     }
 
     @Transactional

@@ -53,4 +53,10 @@ public class ServiceJobController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/finish")
+    public ResponseEntity<ServiceJobDTO> finishService(@PathVariable Long id) {
+        ServiceJobDTO dto = service.finishService(id);
+        return ResponseEntity.ok(dto);
+    }
 }

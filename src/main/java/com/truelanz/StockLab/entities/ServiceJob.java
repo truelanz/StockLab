@@ -1,18 +1,21 @@
 package com.truelanz.StockLab.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,16 +43,18 @@ public class ServiceJob {
     private LocalTime finalTime;
     private LocalDate initDate;
     private LocalDate finalDate;
+    private BigDecimal  serviceValue;
+    private BigDecimal  totalValue;
+    @Enumerated(EnumType.STRING)
+    private ServiceStatus status = ServiceStatus.IN_PROGRESS;
+
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
     
-    @ManyToMany
-    @JoinTable(name = "tb_service_product",
-        joinColumns = @JoinColumn(name = "service_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "id.serviceJob", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ServiceProduct> products = new ArrayList<>();
 
     // Muitos serviços pertencem a um cliente
     @ManyToOne
