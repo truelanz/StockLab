@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.truelanz.StockLab.dto.ServiceJobDTO;
+import com.truelanz.StockLab.dto.ServiceJobSearchDTO;
 import com.truelanz.StockLab.services.ServiceJobService;
 
 import jakarta.validation.Valid;
@@ -46,6 +47,16 @@ public class ServiceJobController {
     public ResponseEntity<ServiceJobDTO> update(@Valid @PathVariable Long id, @RequestBody ServiceJobDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
+    }
+
+    //Consulta dinamica com multiplos campos JSON
+    @PostMapping("/search")
+    public ResponseEntity<Page<ServiceJobDTO>> searchServices(
+            @RequestBody ServiceJobSearchDTO filters,
+            Pageable pageable) {
+
+        Page<ServiceJobDTO> list = service.search(filters, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @DeleteMapping(value = "/{id}")

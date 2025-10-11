@@ -10,5 +10,5 @@ import com.truelanz.StockLab.entities.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByCategory(Category category);
 
-     Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

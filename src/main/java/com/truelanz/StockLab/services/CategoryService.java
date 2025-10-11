@@ -25,10 +25,32 @@ public class CategoryService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Transactional(readOnly = true)
+    /* @Transactional(readOnly = true)
     public Page<CategoryDTO> findAllPaged(Pageable pageable) {
         Page<Category> result = repository.findAll(pageable);
         return result.map(x -> new CategoryDTO(x));
+    } */
+
+    //Pesquisa paginada e pesquisa por nome
+    @Transactional(readOnly = true)
+    public Page<CategoryDTO> SearchPaged(Pageable pageable, String search) {
+        Page<Category> category;
+
+        if (search != null && !search.isEmpty()) {
+            category = repository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            category = repository.findAll(pageable);
+        }
+
+        // Convertendo para DTO
+        return category.map(CategoryDTO::new);
+    }
+
+    public CategoryDTO findById(Long id) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Category id: %d is not found: ", id)));
+
+        return new CategoryDTO(category);
     }
 
     @Transactional

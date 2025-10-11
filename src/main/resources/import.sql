@@ -14,13 +14,13 @@ INSERT INTO tb_category (name) VALUES ('Vidrarias');
 INSERT INTO tb_category (name) VALUES ('Solucoes Padrao');
 -- Produtos existentes
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1, 'https://cdn.awsli.com.br/600x700/1280/1280428/produto/51231978/reagente-neon--3--m8vpuv8bn3.png');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Microscopio Optico', 5, 3500.00, DATE '2025-08-15', 2, 'https://img.com/microscopio.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3, 'https://img.com/tubos.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Luva de Latex', 500, 0.75, DATE '2025-09-06', 5, 'https://img.com/luvas.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Oculos de Protecao', 80, 15.00, DATE '2025-09-06', 5, 'https://img.com/oculos.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Bico de Bunsen', 25, 120.00, DATE '2025-09-07', 6, 'https://img.com/bico.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Pipeta Graduada', 150, 8.50, DATE '2025-09-07', 6, 'https://img.com/pipeta.jpg');
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Solucao Tampao pH 7', 60, 35.00, DATE '2025-09-08', 7, 'https://img.com/tampao.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Microscopio Optico', 5, 3500.00, DATE '2025-08-15', 2, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Luva de Latex', 500, 0.75, DATE '2025-09-06', 5, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Oculos de Protecao', 80, 15.00, DATE '2025-09-06', 5, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Bico de Bunsen', 25, 120.00, DATE '2025-09-07', 6, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Pipeta Graduada', 150, 8.50, DATE '2025-09-07', 6, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
+
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Solucao Padrao de Cloreto', 40, 28.00, DATE '2025-09-08', 7, 'https://img.com/cloreto.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Espectrofotometro', 3, 12000.00, DATE '2025-09-08', 2, 'https://img.com/espectro.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Centrifuga de Bancada', 4, 7500.00, DATE '2025-09-09', 2, 'https://img.com/centrifuga.jpg');

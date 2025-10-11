@@ -25,11 +25,35 @@ public class EmployeeService {
     @Autowired
     private ServiceJobRepository serviceRepository;
 
-    @Transactional(readOnly = true)
+    /* @Transactional(readOnly = true)
     public Page<EmployeeDTO> findAllPaged(Pageable pageable) {
         Page<Employee> result = repository.findAll(pageable);
         return result.map(x -> new EmployeeDTO(x));
+    } */
+
+    //Pesquisa paginada e pesquisa por nome
+    @Transactional(readOnly = true)
+    public Page<EmployeeDTO> SearchPaged(Pageable pageable, String search) {
+        Page<Employee> employees;
+
+        if (search != null && !search.isEmpty()) {
+            employees = repository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            employees = repository.findAll(pageable);
+        }
+
+        // Convertendo para DTO
+        return employees.map(EmployeeDTO::new);
     }
+
+    @Transactional(readOnly = true)
+    public EmployeeDTO findById(Long id) {
+        Employee entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee id: %d not found: ", id)));
+
+        return new EmployeeDTO(entity);
+    }
+
 
     @Transactional
     public EmployeeDTO insert(EmployeeDTO dto) {

@@ -37,14 +37,21 @@ public class ProductController {
         return ResponseEntity.ok().body(list);
     } */
 
+    //Pesquisa paginada com pesquisa por nome.
     @GetMapping
-    public Page<ProductDTO> findAll(
+    public ResponseEntity<Page<ProductDTO>> SearchPaged(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String search) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return service.findAllPaged(pageable, search);
+        return ResponseEntity.ok().body(service.SearchPaged(pageable, search));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findById(@Valid @PathVariable Long id) {
+        ProductDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping

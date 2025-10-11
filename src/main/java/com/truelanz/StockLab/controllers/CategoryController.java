@@ -2,6 +2,7 @@ package com.truelanz.StockLab.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.truelanz.StockLab.dto.CategoryDTO;
@@ -26,10 +28,27 @@ public class CategoryController {
     @Autowired
     private CategoryService service;
 
-    @GetMapping
+    /* @GetMapping
     public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) { //Parametros: page, size, sort
         Page <CategoryDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
+    } */
+
+    //Pesquisar paginada e pesquisa por nome
+    @GetMapping
+    public Page<CategoryDTO> SearchPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String search) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return service.SearchPaged(pageable, search);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDTO> findById(@Valid @PathVariable Long id) {
+        CategoryDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping

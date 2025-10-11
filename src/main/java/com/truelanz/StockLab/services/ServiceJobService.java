@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.truelanz.StockLab.dto.ServiceJobDTO;
+import com.truelanz.StockLab.dto.ServiceJobSearchDTO;
 import com.truelanz.StockLab.entities.Client;
 import com.truelanz.StockLab.entities.Employee;
 import com.truelanz.StockLab.entities.Product;
@@ -25,6 +27,7 @@ import com.truelanz.StockLab.repositories.ProductRepository;
 import com.truelanz.StockLab.repositories.ServiceJobRepository;
 import com.truelanz.StockLab.services.exceptions.DatabaseException;
 import com.truelanz.StockLab.services.exceptions.ResourceNotFoundException;
+import com.truelanz.StockLab.specifications.ServiceJobSpecification;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -39,6 +42,22 @@ public class ServiceJobService {
     private ClientRepository clientRepository;
     @Autowired
     private ProductRepository productRepository;
+
+    //Pesquisa dinâmica
+    @Transactional
+    public Page<ServiceJobDTO> search(ServiceJobSearchDTO filters, Pageable pageable) {
+
+        Specification<ServiceJob> spec = Specification.allOf(
+            ServiceJobSpecification.nameContains(filters.getName()),
+            ServiceJobSpecification.dateGreaterOrEqual(filters.getStartDate()),
+            ServiceJobSpecification.dateLessOrEqual(filters.getEndDate()),
+            ServiceJobSpecification.byClient(filters.getClientId()),
+            ServiceJobSpecification.byEmployee(filters.getEmployeeId())
+        );
+
+        return repository.findAll(spec, pageable).map(ServiceJobDTO::new);
+    }
+
 
     @Transactional(readOnly = true)
     public Page<ServiceJobDTO> findAllPaged(Pageable pageable) {

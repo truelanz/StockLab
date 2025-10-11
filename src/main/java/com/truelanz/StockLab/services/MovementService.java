@@ -32,6 +32,14 @@ public class MovementService {
         return result.map(MovementDTO::new);
     }
 
+    @Transactional(readOnly = true)
+    public MovementDTO findById(Long id) {
+        Movement movement = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Movement id: %d not found", id)));
+
+        return new MovementDTO(movement);
+    }
+
      @Transactional
     public MovementDTO insert(MovementInsertDTO dto) {
         Product product = productRepository.findById(dto.getProductId())

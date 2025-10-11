@@ -24,10 +24,27 @@ public class ClientService {
     @Autowired
     private ClientRepository repository;
 
+    //Pesquisa paginada e pesquisa por nome
     @Transactional(readOnly = true)
-    public Page<ClientDTO> findAllPaged(Pageable pageable) {
-        Page<Client> result = repository.findAll(pageable);
-        return result.map(x -> new ClientDTO(x));
+    public Page<ClientDTO> SearchPaged(Pageable pageable, String search) {
+        Page<Client> clients;
+
+        if (search != null && !search.isEmpty()) {
+            clients = repository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            clients = repository.findAll(pageable);
+        }
+
+        // Convertendo para DTO
+        return clients.map(ClientDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public ClientDTO findById(Long id) {
+        Client entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Client id: %d not found: ", id)));
+
+        return new ClientDTO(entity);
     }
 
     @Transactional

@@ -36,8 +36,9 @@ public class ProductService {
         return result.map(x -> new ProductDTO(x));
     } */
 
+    //Pesquisa paginada e pesquisa por nome
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAllPaged(Pageable pageable, String search) {
+    public Page<ProductDTO> SearchPaged(Pageable pageable, String search) {
         Page<Product> products;
 
         if (search != null && !search.isEmpty()) {
@@ -48,6 +49,14 @@ public class ProductService {
 
         // Convertendo para DTO
         return products.map(ProductDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public ProductDTO findById(Long id) {
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Product id: %d not found: ", id)));
+
+        return new ProductDTO(product);
     }
 
     @Transactional
