@@ -58,7 +58,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> update(@Valid @PathVariable Long id, @RequestBody EmployeeDTO dto) {
+    public ResponseEntity<EmployeeDTO> update(@PathVariable Long id, @Valid @RequestBody EmployeeDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }

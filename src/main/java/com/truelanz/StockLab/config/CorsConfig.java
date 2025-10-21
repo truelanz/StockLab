@@ -11,6 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Value("${frontend.url}")
     private String frontendUrl;
 
+    @SuppressWarnings("null")
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // aplica para todas as rotas

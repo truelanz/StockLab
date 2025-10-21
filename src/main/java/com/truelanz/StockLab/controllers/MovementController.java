@@ -36,7 +36,7 @@ public class MovementController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovementDTO> findById(@Valid @PathVariable Long id) {
+    public ResponseEntity<MovementDTO> findById(@PathVariable Long id) {
         MovementDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }

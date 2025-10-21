@@ -49,12 +49,12 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findById(@Valid @PathVariable Long id) {
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductInsertDTO dto) {
         ProductDTO newProduct = service.insert(dto);
 
@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductInsertDTO dto) {
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductInsertDTO dto) {
         ProductDTO updatedProduct = service.update(id, dto);
         return ResponseEntity.ok(updatedProduct);
     }

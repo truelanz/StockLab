@@ -44,7 +44,7 @@ public class ServiceJobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceJobDTO> update(@Valid @PathVariable Long id, @RequestBody ServiceJobDTO dto) {
+    public ResponseEntity<ServiceJobDTO> update(@PathVariable Long id, @Valid @RequestBody ServiceJobDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }

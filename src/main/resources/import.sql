@@ -13,7 +13,7 @@ INSERT INTO tb_category (name) VALUES ('Equipamentos de Protecao Individual');
 INSERT INTO tb_category (name) VALUES ('Vidrarias');
 INSERT INTO tb_category (name) VALUES ('Solucoes Padrao');
 -- Produtos existentes
-INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1, 'https://cdn.awsli.com.br/600x700/1280/1280428/produto/51231978/reagente-neon--3--m8vpuv8bn3.png');
+INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product, validity) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1, 'https://cdn.awsli.com.br/600x700/1280/1280428/produto/51231978/reagente-neon--3--m8vpuv8bn3.png', DATE '2027-09-01');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Microscopio Optico', 5, 3500.00, DATE '2025-08-15', 2, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Tubos de Ensaio', 200, 2.50, DATE '2025-09-05', 3, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Luva de Latex', 500, 0.75, DATE '2025-09-06', 5, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
