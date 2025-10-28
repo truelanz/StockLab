@@ -78,34 +78,56 @@ public class ServiceJobService {
     public ServiceJobDTO update(Long id, ServiceJobDTO dto) {
         try {
             ServiceJob entity = repository.getReferenceById(id);
+            ServiceStatus oldStatus = entity.getStatus(); // status anterior
+
             copyDtoToEntity(dto, entity);
+
+            // Se mudou de FINALIZED para CANCELED → devolver estoque
+            if (oldStatus == ServiceStatus.FINALIZED && entity.getStatus() == ServiceStatus.CANCELLED) {
+                for (ServiceProduct sp : entity.getProducts()) {
+                    Product product = sp.getProduct();
+                    int currentQty = product.getCurrentQuantity() != null ? product.getCurrentQuantity() : 0;
+                    int newQty = currentQty + (sp.getQuantityUsed() != null ? sp.getQuantityUsed() : 0);
+                    product.setCurrentQuantity(newQty);
+                    productRepository.save(product);
+                }
+            }
+
             entity = repository.save(entity);
             return new ServiceJobDTO(entity);
+
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("ServiceJob not found, id " + id);
+            throw new ResourceNotFoundException("Serviço não encontrado, id " + id);
         } catch (Exception e) {
             e.printStackTrace();
-            Throwable cause = e.getCause();
-            while (cause != null) {
-                System.out.println("CAUSA: " + cause.getMessage());
-                cause = cause.getCause();
-            }
-            throw new DatabaseException("Erro ao atualizar ServiceJob: " + e.getClass().getName());
+            throw new DatabaseException("Erro ao atualizar serviço: " + e.getMessage());
         }
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
-         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("Resource not found");
+        ServiceJob service = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
+
+        // 1. Não permitir excluir FINALIZED
+        if (service.getStatus() == ServiceStatus.FINALIZED) {
+            throw new DatabaseException("Não é possível excluir um serviço finalizado.");
         }
+
+        // 2. Não permitir excluir serviços com produtos e não cancelados
+        if (!service.getProducts().isEmpty() && service.getStatus() != ServiceStatus.CANCELLED) {
+            throw new DatabaseException("Para excluir um serviço com produtos, altere o status para 'CANCELED' antes.");
+        }
+
+        // 3. Se chegou aqui, pode excluir
         try {
             repository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Referential integrity failure");
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial ao excluir o serviço.");
         }
     }
+
 
     @Transactional
     public ServiceJobDTO finishService(Long serviceId) {

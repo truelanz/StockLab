@@ -50,8 +50,8 @@ public class EmployeeController {
         EmployeeDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
-
-    @PostMapping
+    
+    @PostMapping("/new")
     public ResponseEntity<EmployeeDTO> insert(@Valid @RequestBody EmployeeDTO dto) {
         EmployeeDTO newCategory = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);

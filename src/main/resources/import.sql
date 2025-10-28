@@ -4,6 +4,7 @@ INSERT INTO tb_employee (name) VALUES ('Mula Fazueli');
 INSERT INTO tb_employee (name) VALUES ('Merab');
 INSERT INTO tb_employee (name) VALUES ('Poatan');
 INSERT INTO tb_employee (name) VALUES ('Manoel Gomes');
+
 -- Categorias existentes
 INSERT INTO tb_category (name) VALUES ('Reagentes Quimicos');
 INSERT INTO tb_category (name) VALUES ('Equipamentos de Analise');
@@ -12,6 +13,7 @@ INSERT INTO tb_category (name) VALUES ('Medicamentos Controlados');
 INSERT INTO tb_category (name) VALUES ('Equipamentos de Protecao Individual');
 INSERT INTO tb_category (name) VALUES ('Vidrarias');
 INSERT INTO tb_category (name) VALUES ('Solucoes Padrao');
+
 -- Produtos existentes
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product, validity) VALUES ('Reagente X', 100, 250.75, DATE '2025-09-01', 1, 'https://cdn.awsli.com.br/600x700/1280/1280428/produto/51231978/reagente-neon--3--m8vpuv8bn3.png', DATE '2027-09-01');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Microscopio Optico', 5, 3500.00, DATE '2025-08-15', 2, 'https://t4.ftcdn.net/jpg/01/56/06/33/360_F_156063380_4M6zRW5xpiO1f0Y2FKyugvKel61PbbuW.jpg');
@@ -41,6 +43,7 @@ INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, ca
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Soro Fisiologico 0,9%', 150, 3.00, DATE '2025-09-16', 4, 'https://img.com/soro.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Antibiotico A', 90, 45.00, DATE '2025-09-17', 4, 'https://img.com/antibiotico.jpg');
 INSERT INTO tb_product (name, current_quantity, product_value, issuance_date, category_id, img_product) VALUES ('Analgesico B', 120, 12.00, DATE '2025-09-17', 4, 'https://img.com/analgesico.jpg');
+
 -- Clientes existentes
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Ana Silva', DATE '1990-05-10', '11988887777', TIMESTAMP '2025-09-01 09:00:00', 'Rua Paprica Doce, 123', '11111111111');
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Joao da Silva', DATE '1985-03-08', '11999996666', TIMESTAMP '2025-09-02 09:10:00', 'Rua Paprica Defumanda, 321', '22222222222');
@@ -74,6 +77,7 @@ INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VA
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Henrique Batista', DATE '1996-01-15', '11999990000', TIMESTAMP '2025-09-09 09:30:00', 'Rua Topazio, 404', '31313131313');
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Larissa Prado', DATE '1998-02-20', '11990001111', TIMESTAMP '2025-09-09 09:40:00', 'Rua Diamante, 505', '32323232323');
 INSERT INTO tb_client (name, birth, phone, date_register, local_address, CPF) VALUES ('Felipe Rezende', DATE '1982-03-25', '11991112222', TIMESTAMP '2025-09-09 09:50:00', 'Rua Turmalina, 606', '33333333333');
+
 -- Movimentacoes (mantidas)
 INSERT INTO tb_movement (quantity, type_entry_exit, issuance_date, observation, product_id) VALUES (50, 'ENTRY', TIMESTAMP '2025-09-01 09:15:00', 'Compra de reagente', 1);
 INSERT INTO tb_movement (quantity, type_entry_exit, issuance_date, observation, product_id) VALUES (10, 'EXIT', TIMESTAMP '2025-09-02 11:00:00', 'Uso em analise clinica', 1);

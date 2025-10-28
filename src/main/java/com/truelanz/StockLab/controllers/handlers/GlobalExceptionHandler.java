@@ -9,12 +9,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.truelanz.StockLab.services.exceptions.DatabaseException;
+import com.truelanz.StockLab.services.exceptions.ResourceNotFoundException;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Erros de validação
+    //Erros de validação (Bean Validation)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> validation(
             MethodArgumentNotValidException e,
@@ -36,7 +39,41 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    // Erro genérico
+    //Recurso não encontrado
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> resourceNotFound(
+            ResourceNotFoundException e,
+            HttpServletRequest request
+    ) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "Recurso não encontrado",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(err);
+    }
+
+    //Erros de banco de dados, integridade, regras de negócio
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database(
+            DatabaseException e,
+            HttpServletRequest request
+    ) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "Erro de banco de dados ou regra de negócio",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(err);
+    }
+
+    //Erro genérico (fallback)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> generic(
             Exception e,
