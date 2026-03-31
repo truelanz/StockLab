@@ -88,5 +88,12 @@ public class ClientService {
         entity.setDateRegister(Instant.now());
         entity.setLocalAddress(dto.getLocalAddress());
         entity.setCPF(dto.getCPF());
+        entity.setCep(dto.getCep());
+        entity.setNeighborhood(dto.getNeighborhood());
+        entity.setState(dto.getState());
+        entity.setCity(dto.getCity());
+        entity.setHealthPlan(dto.getHealthPlan());
+        entity.setEmail(dto.getEmail());
+        entity.setPathImg(dto.getPathImg());
     }
 }

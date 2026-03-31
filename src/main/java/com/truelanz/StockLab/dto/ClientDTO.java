@@ -26,6 +26,13 @@ public class ClientDTO {
     private Instant dateRegister;
     private String localAddress;
     private String CPF;
+    private String cep;
+    private String neighborhood;
+    private String state;
+    private String city;
+    private String healthPlan;
+    private String email;
+    private String pathImg;
 
     public ClientDTO(Client entity) {
     this.id = entity.getId();
@@ -35,6 +42,13 @@ public class ClientDTO {
     this.dateRegister = entity.getDateRegister();
     this.localAddress = entity.getLocalAddress();
     this.CPF = entity.getCPF();
+    this.cep = entity.getCep();
+    this.neighborhood = entity.getNeighborhood();
+    this.state = entity.getState();
+    this.city = entity.getCity();
+    this.healthPlan = entity.getHealthPlan();
+    this.email = entity.getEmail();
+    this.pathImg = entity.getPathImg();
     }
     
     public ClientDTO(Long id, String name) {

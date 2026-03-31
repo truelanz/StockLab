@@ -31,11 +31,19 @@ public class Client {
     @EqualsAndHashCode.Include
     private Long id;
     private String name;
+    private String email;
     private LocalDate birth;
     private String phone;
     private Instant dateRegister;
-    private String localAddress;
     private String CPF;
+    private String cep;
+    private String localAddress;
+    private String neighborhood;
+    private String state;
+    private String city;
+    private String healthPlan;
+    private String pathImg;
+
 
     // Um cliente pode ter vários serviços
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
