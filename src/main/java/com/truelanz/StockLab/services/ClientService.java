@@ -16,6 +16,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,156 +36,76 @@ public class ClientService {
 
     @Autowired
     private ClientRepository repository;
+    private static final List<String> ALLOWED_TYPES = List.of("image/jpeg", "image/png", "image/webp");
 
-    //Pesquisa paginada e pesquisa por nome
+    // ── Pesquisa paginada ──────────────────────────────────────────────────────
     @Transactional(readOnly = true)
     public Page<ClientDTO> SearchPaged(Pageable pageable, String search) {
-        Page<Client> clients;
-
-        if (search != null && !search.isEmpty()) {
-            clients = repository.findByNameContainingIgnoreCase(search, pageable);
-        } else {
-            clients = repository.findAll(pageable);
-        }
-
-        // Convertendo para DTO
+        Page<Client> clients = (search != null && !search.isBlank())
+                ? repository.findByNameContainingIgnoreCase(search, pageable)
+                : repository.findAll(pageable);
         return clients.map(ClientDTO::new);
     }
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
         Client entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Client id: %d not found: ", id)));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Client id: " + id + " not found"));
         return new ClientDTO(entity);
     }
 
     @Transactional
-    public ClientDTO insert(ClientDTO dto) {
+    public ClientDTO insert(ClientDTO dto, MultipartFile photo) throws IOException {
         Client entity = new Client();
         copyDtoToEntity(dto, entity);
-
+        if (photo != null && !photo.isEmpty()) {
+            entity.setPhoto(processPhoto(photo));
+        }
         repository.save(entity);
         return new ClientDTO(entity);
     }
 
     @Transactional
-    public ClientDTO update(Long id, ClientDTO dto) {
+    public ClientDTO update(Long id, ClientDTO dto, MultipartFile photo) throws IOException {
         try {
             Client entity = repository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
+            if (photo != null && !photo.isEmpty()) {
+                // Substitui a foto anterior
+                entity.setPhoto(processPhoto(photo));
+            }
+            // Se photo == null ou vazia, mantém a foto existente
             entity = repository.save(entity);
             return new ClientDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Resource not found");
+            throw new ResourceNotFoundException("Client id: " + id + " not found");
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("Resource not found");
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Client id: " + id + " not found");
         }
         try {
             repository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Referential integrity failure");
         }
     }
 
-    // No ClientService.java
-    @Transactional
-    public ClientDTO uploadImage(Long id, MultipartFile file) throws IOException {
-        // 1. Valida se o cliente existe ANTES de processar o arquivo
-        Client entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Client id: " + id + " not found"));
-
-        String originalName = file.getOriginalFilename();
-        if (originalName == null) throw new IllegalArgumentException("Arquivo inválido.");
-        
-        String ext = originalName.substring(originalName.lastIndexOf('.') + 1).toLowerCase();
-        if (!List.of("jpg", "jpeg", "png").contains(ext)) {
-            throw new IllegalArgumentException("Formato inválido.");
+    private byte[] processPhoto(MultipartFile file) throws IOException {
+        String contentType = file.getContentType();
+        if (contentType == null || !ALLOWED_TYPES.contains(contentType)) {
+            throw new IllegalArgumentException(
+                    "Formato inválido. Aceitos: JPEG, PNG, WEBP");
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.systemDefault());
-        String timestamp = formatter.format(Instant.now());
-
-        String safeName = entity.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        String fileName = "ID" + id + "_" + safeName + "_" + timestamp + "." + ext;
-
-        // 2. Garante a criação do diretório
-        Path dir = Paths.get("C:/StockLab/imagens");
-        if (!Files.exists(dir)) {
-            Files.createDirectories(dir);
+        if (file.getSize() > 5 * 1024 * 1024) { // 5 MB
+            throw new IllegalArgumentException("Imagem deve ter no máximo 5 MB");
         }
-
-        Path destination = dir.resolve(fileName);
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-        // 3. Atualiza o path e salva
-        entity.setPathImg(destination.toString());
-        entity = repository.save(entity);
-
-        return new ClientDTO(entity);
+        return file.getBytes();
     }
 
-/*     @Transactional
-    public ClientDTO updateImage(Long id, MultipartFile file) throws IOException {
-
-        Client entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Client id: " + id + " not found"));
-
-        //Remove imagem antiga
-        if (entity.getPathImg() != null) {
-            Path oldPath = Paths.get(entity.getPathImg());
-            Files.deleteIfExists(oldPath);
-        }
-
-        //Validação
-        String originalName = file.getOriginalFilename();
-        if (originalName == null || !originalName.contains(".")) {
-            throw new IllegalArgumentException("Arquivo inválido.");
-        }
-
-        String ext = originalName.substring(originalName.lastIndexOf('.') + 1).toLowerCase();
-        if (!List.of("jpg", "jpeg", "png").contains(ext)) {
-            throw new IllegalArgumentException("Formato inválido.");
-        }
-
-        //Nome seguro
-        String safeName = entity.getName().replaceAll("[^a-zA-Z0-9]", "_");
-
-        String fileName = safeName + "_" + System.currentTimeMillis() + "." + ext;
-
-        Path dir = Paths.get("C:/StockLab/imagens");
-        Files.createDirectories(dir);
-
-        Path destination = dir.resolve(fileName);
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-        entity.setPathImg(destination.toString());
-        entity = repository.save(entity);
-
-        return new ClientDTO(entity);
-    }
- */
-
-    @Transactional
-    public void deleteImage(Long id) throws IOException {
-
-        Client entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Client id: " + id + " not found"));
-
-        if (entity.getPathImg() != null) {
-            Path path = Paths.get(entity.getPathImg());
-            Files.deleteIfExists(path);
-
-            entity.setPathImg(null);
-            repository.save(entity);
-        }
-    }
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {
         entity.setName(dto.getName());
@@ -198,6 +120,5 @@ public class ClientService {
         entity.setCity(dto.getCity());
         entity.setHealthPlan(dto.getHealthPlan());
         entity.setEmail(dto.getEmail());
-        entity.setPathImg(dto.getPathImg());
     }
 }

@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -42,7 +44,10 @@ public class Client {
     private String state;
     private String city;
     private String healthPlan;
-    private String pathImg;
+    @Lob
+    @Column(name = "photo", columnDefinition = "bytea")
+    private byte[] photo; // substitui pathImg
+
 
 
     // Um cliente pode ter vários serviços
