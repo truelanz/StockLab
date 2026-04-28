@@ -45,10 +45,8 @@ public class Client {
     private String city;
     private String healthPlan;
     @Lob
-    @Column(name = "photo", columnDefinition = "bytea")
+    @Column(name = "photo")
     private byte[] photo; // substitui pathImg
-
-
 
     // Um cliente pode ter vários serviços
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)

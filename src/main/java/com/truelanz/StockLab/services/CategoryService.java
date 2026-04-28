@@ -25,13 +25,6 @@ public class CategoryService {
     @Autowired
     private ProductRepository productRepository;
 
-    /* @Transactional(readOnly = true)
-    public Page<CategoryDTO> findAllPaged(Pageable pageable) {
-        Page<Category> result = repository.findAll(pageable);
-        return result.map(x -> new CategoryDTO(x));
-    } */
-
-    //Pesquisa paginada e pesquisa por nome
     @Transactional(readOnly = true)
     public Page<CategoryDTO> SearchPaged(Pageable pageable, String search) {
         Page<Category> category;
@@ -42,13 +35,13 @@ public class CategoryService {
             category = repository.findAll(pageable);
         }
 
-        // Convertendo para DTO
         return category.map(CategoryDTO::new);
     }
 
+    @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Category category = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Category id: %d is not found: ", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Category id: %d not found", id)));
 
         return new CategoryDTO(category);
     }
@@ -65,7 +58,7 @@ public class CategoryService {
     @Transactional
     public CategoryDTO update(Long id, CategoryDTO dto) {
         try {
-            Category entity = repository.getReferenceById(id); // busca sem ir ao banco de imediato
+            Category entity = repository.getReferenceById(id);
             entity.setName(dto.getName());
             entity = repository.save(entity);
             return new CategoryDTO(entity);
@@ -80,7 +73,6 @@ public class CategoryService {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-        // Verifica se há produtos vinculados
         if (productRepository.existsByCategory(category)) {
             throw new DatabaseException("Cannot delete category with linked products");
         }

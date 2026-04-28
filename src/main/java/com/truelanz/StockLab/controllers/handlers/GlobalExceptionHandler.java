@@ -17,76 +17,77 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    //Erros de validação (Bean Validation)
+    // Erros de validação (Bean Validation)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> validation(
             MethodArgumentNotValidException e,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request) {
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ValidationError err = new ValidationError(
-                Instant.now(),
-                status.value(),
-                "Erro de validação",
-                "Campos inválidos",
-                request.getRequestURI()
-        );
+                Instant.now(), status.value(),
+                "Erro de validação", "Campos inválidos",
+                request.getRequestURI());
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
         }
-
         return ResponseEntity.status(status).body(err);
     }
 
-    //Recurso não encontrado
+    // Recurso não encontrado → 404
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFound(
             ResourceNotFoundException e,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request) {
+
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(
-                Instant.now(),
-                status.value(),
-                "Recurso não encontrado",
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                Instant.now(), status.value(),
+                "Recurso não encontrado", e.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
-    //Erros de banco de dados, integridade, regras de negócio
+    // Erros de banco / regras de negócio → 400
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StandardError> database(
             DatabaseException e,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request) {
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(
-                Instant.now(),
-                status.value(),
-                "Erro de banco de dados ou regra de negócio",
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                Instant.now(), status.value(),
+                "Erro de banco de dados ou regra de negócio", e.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
-    //Erro genérico (fallback)
+    // CORREÇÃO: IllegalArgumentException (ex: validação de foto) → 400, não 500
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArgument(
+            IllegalArgumentException e,
+            HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(
+                Instant.now(), status.value(),
+                "Requisição inválida", e.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    // Erro genérico (fallback) → 500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> generic(
             Exception e,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request) {
+
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         StandardError err = new StandardError(
-                Instant.now(),
-                status.value(),
-                "Erro interno",
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                Instant.now(), status.value(),
+                "Erro interno", e.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }
