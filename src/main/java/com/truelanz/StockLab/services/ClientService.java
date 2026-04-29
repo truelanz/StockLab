@@ -56,7 +56,7 @@ public class ClientService {
         return new ClientDTO(entity);
     } */
 
-        @Transactional
+    @Transactional
     public ClientDTO insert(ClientDTO dto, MultipartFile photo) throws IOException {
 
         Client entity = new Client();

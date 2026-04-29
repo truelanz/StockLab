@@ -52,6 +52,8 @@ public class ClientController {
             @RequestPart(value = "photo", required = false) MultipartFile photo)
             throws IOException {
 
+        System.out.println("CONTROLLER INSERT");
+
         ClientDTO created = service.insert(dto, photo);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(created.getId()).toUri();
